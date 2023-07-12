@@ -2,7 +2,7 @@
 
 [Live Site](https://archery-store.vercel.app/)
 
-Archery ecommerce site.
+Archery e-commerce site with Stripe integration for payments. Products include bows, bow accessories, arrows, and shooting accessories.
 
 <img src="public/archery-store.png" width="960"><br/>
 
