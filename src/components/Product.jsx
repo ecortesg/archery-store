@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Box, Typography, useTheme } from "@mui/material";
 
 export function Product({ product, width }) {

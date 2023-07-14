@@ -58,7 +58,7 @@ export function Footer() {
             Av. Dirección Inventada 214, Col. Donde Sea, Alc. La Que Gustes,
             01234
           </Typography>
-          <Typography mb="30px">alguncorreo@gmail.com</Typography>
+          <Typography mb="30px">Correo</Typography>
           <Typography mb="30px">55 0123 4567</Typography>
         </Box>
       </Box>

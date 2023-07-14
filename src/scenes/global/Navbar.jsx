@@ -1,14 +1,28 @@
-import { Badge, Box, Icon, IconButton } from "@mui/material";
+import { Badge, Box, IconButton, TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { createSearchParams, useNavigate } from "react-router-dom";
 import { shades } from "../../theme";
-import { SearchOutlined, ShoppingBagOutlined } from "@mui/icons-material";
+import { SearchOutlined, ShoppingCartOutlined } from "@mui/icons-material";
 import { setIsCartOpen } from "../../state";
+import { useState } from "react";
 
 export function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.cart);
+  const [searchInput, setSearchInput] = useState("");
+
+  function handleChange(value) {
+    setSearchInput(value);
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    navigate({
+      pathname: "/search",
+      search: createSearchParams({ query: searchInput }).toString(),
+    });
+  }
 
   return (
     <Box
@@ -32,7 +46,7 @@ export function Navbar() {
       >
         <Box
           onClick={() => navigate("/")}
-          sx={{ "&:hover": { cursor: "pointer" } }}
+          sx={{ "&:hover": { cursor: "pointer" }, marginRight: "28px" }}
           color={shades.secondary[500]}
         >
           ARGOS
@@ -40,12 +54,20 @@ export function Navbar() {
         <Box
           display="flex"
           justifyContent="space-between"
-          columnGap="20px"
+          columnGap="10px"
           zIndex="2"
         >
-          <IconButton sx={{ color: "black" }}>
-            <SearchOutlined />
-          </IconButton>
+          <form style={{ display: "flex" }} onSubmit={handleSubmit}>
+            <TextField
+              label="Buscar"
+              size="small"
+              onChange={(e) => handleChange(e.target.value)}
+              sx={{ minWidth: 0 }}
+            />
+            <IconButton type="submit" sx={{ color: "black" }}>
+              <SearchOutlined />
+            </IconButton>
+          </form>
           <Badge
             badgeContent={cart.length}
             color="secondary"
@@ -64,7 +86,7 @@ export function Navbar() {
               onClick={() => dispatch(setIsCartOpen({}))}
               sx={{ color: "black" }}
             >
-              <ShoppingBagOutlined />
+              <ShoppingCartOutlined />
             </IconButton>
           </Badge>
         </Box>
