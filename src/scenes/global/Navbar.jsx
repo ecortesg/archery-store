@@ -49,7 +49,7 @@ export function Navbar() {
           sx={{ "&:hover": { cursor: "pointer" }, marginRight: "28px" }}
           color={shades.secondary[500]}
         >
-          ARGOS
+          BOWTIQUE
         </Box>
         <Box
           display="flex"

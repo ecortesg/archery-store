@@ -24,7 +24,7 @@ export function Footer() {
             mb="30px"
             color={shades.secondary[500]}
           >
-            ARGOS
+            BOWTIQUE
           </Typography>
           <div>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae
