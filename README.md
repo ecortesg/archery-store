@@ -16,7 +16,7 @@ Archery e-commerce site with Stripe integration for payments. Products include b
 - Formik
 - Yup
 
-### Backend → [Repo](https://github.com/ecortesg/drf-archery-store-api)
+### Backend → [Repo](https://github.com/ecortesg/drf-ecommerce-api)
 
 - Django Rest Framework
 - Stripe
