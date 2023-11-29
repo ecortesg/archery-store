@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Box, Typography, IconButton, useMediaQuery } from "@mui/material";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -5,23 +6,39 @@ import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { shades } from "../../theme";
 
-// Imports all images from the assets folder
-function importAll(r) {
-  return r.keys().reduce((acc, item) => {
-    acc[item.replace("./", "")] = r(item);
-    return acc;
-  }, {});
-}
+// // Imports all images from the assets folder
+// function importAll(r) {
+//   return r.keys().reduce((acc, item) => {
+//     acc[item.replace("./", "")] = r(item);
+//     return acc;
+//   }, {});
+// }
 
-const gallery = Object.values(
-  import.meta.glob("../../assets/*.{png,jpg,jpeg,PNG,JPEG}", {
-    eager: true,
-    as: "url",
-  })
-);
+// const gallery = Object.values(
+//   import.meta.glob("../../assets/*.{png,jpg,jpeg,PNG,JPEG}", {
+//     eager: true,
+//     as: "url",
+//   })
+// );
 
 export function MainCarousel() {
+  const [gallery, setGallery] = useState([]);
+
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  const imageHeight = isNonMobile ? "66vh" : "700px";
+
+  async function getGallery() {
+    const images = await fetch(
+      `${import.meta.env.VITE_BASE_URL}/api/v1/carousel-images/`,
+      { method: "GET" }
+    );
+    const imagesJson = await images.json();
+    setGallery(imagesJson);
+  }
+
+  useEffect(() => {
+    getGallery();
+  }, []);
 
   return (
     <Carousel
@@ -61,17 +78,18 @@ export function MainCarousel() {
       )}
     >
       {gallery.map((image, index) => (
-        <img
-          key={index}
-          src={image}
-          alt={`carousel-${index}`}
-          style={{
-            width: "100%",
-            height: "700px",
-            objectFit: "cover",
-            backgroundAttachment: "fixed",
-          }}
-        />
+        <Box key={image.uuid}>
+          <img
+            src={image.image}
+            alt={`carousel-${index}`}
+            style={{
+              width: "100%",
+              height: imageHeight,
+              objectFit: "cover",
+              backgroundAttachment: "fixed",
+            }}
+          />
+        </Box>
       ))}
     </Carousel>
   );

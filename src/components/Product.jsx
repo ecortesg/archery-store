@@ -8,7 +8,7 @@ export function Product({ product, width }) {
     palette: { neutral },
   } = useTheme();
 
-  const { name, get_absolute_url, price, get_thumbnail, category } =
+  const { uuid, name, get_absolute_url, price, image, category } =
     product || {};
 
   return (
@@ -18,8 +18,8 @@ export function Product({ product, width }) {
           alt={name}
           width="300px"
           height="200px"
-          src={get_thumbnail}
-          onClick={() => navigate(`/products${get_absolute_url}`)}
+          src={image}
+          onClick={() => navigate(`/products${get_absolute_url}/`)}
           style={{ cursor: "pointer", objectFit: "contain" }}
         />
       </Box>

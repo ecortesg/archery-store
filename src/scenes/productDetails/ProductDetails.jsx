@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../../state";
 
 export function ProductDetails() {
-  const { productCategory, productName } = useParams();
+  const { productId } = useParams();
   const [count, setCount] = useState(1);
   const [product, setProduct] = useState(null);
   const [products, setProducts] = useState([]);
@@ -19,18 +19,20 @@ export function ProductDetails() {
   const baseURL = import.meta.env.VITE_BASE_URL;
 
   async function getProduct() {
-    const product = await fetch(
-      `${baseURL}/api/v1/products/${productCategory}/${productName}`,
-      { method: "GET" }
-    );
+    const product = await fetch(`${baseURL}/api/v1/product/${productId}/`, {
+      method: "GET",
+    });
     const productJson = await product.json();
     setProduct(productJson);
   }
 
   async function getProducts() {
-    const products = await fetch(`${baseURL}/api/v1/latest-products/`, {
-      method: "GET",
-    });
+    const products = await fetch(
+      `${baseURL}/api/v1/product/${productId}/related/`,
+      {
+        method: "GET",
+      }
+    );
     const productsJson = await products.json();
     setProducts(productsJson);
   }
@@ -40,7 +42,7 @@ export function ProductDetails() {
     getProducts();
   }, [location]);
 
-  const { name, description, price, get_image, category } = product || {};
+  const { name, description, price, image, category } = product || {};
 
   return (
     <Box width="80%" m="80px auto">
@@ -51,7 +53,7 @@ export function ProductDetails() {
             alt={name}
             width="100%"
             height="100%"
-            src={get_image}
+            src={image}
             style={{ objectFit: "contain" }}
           />
         </Box>
@@ -98,12 +100,12 @@ export function ProductDetails() {
                 setCount(1);
               }}
             >
-              Mover al carrito
+              ADD TO CART
             </Button>
           </Box>
           <Box>
             <Box m="20px 0 5px 0" display="flex">
-              <Typography>Categoría: {category?.name}</Typography>
+              <Typography>CATEGORIES: {category?.name}</Typography>
             </Box>
           </Box>
         </Box>
@@ -111,17 +113,18 @@ export function ProductDetails() {
       {/* RELATED ITEMS */}
       <Box mt="50px" width="100%">
         <Typography variant="h3" fontWeight="bold">
-          Productos Relacionados
+          RELATED PRODUCTS
         </Typography>
         <Box
-          mt="20px"
-          display="flex"
-          flexWrap="wrap"
+          margin="20px auto"
+          display="grid"
+          gridTemplateColumns="repeat(auto-fill, 300px)"
+          justifyContent="space-around"
+          rowGap="20px"
           columnGap="1.33%"
-          justifyContent="space-between"
         >
-          {products.slice(0, 4).map((product) => (
-            <Product product={product} key={product.id} />
+          {products.slice(0, 6).map((product) => (
+            <Product product={product} key={product.uuid} />
           ))}
         </Box>
       </Box>

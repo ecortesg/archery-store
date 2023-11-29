@@ -54,7 +54,7 @@ export function CartMenu() {
         <Box padding="30px" overflow="auto" height="100%">
           {/* HEADER */}
           <FlexBox mb="15px">
-            <Typography variant="h3">Mi carrito ({cart.length})</Typography>
+            <Typography variant="h3">Shopping Cart ({cart.length})</Typography>
             <IconButton onClick={() => dispatch(setIsCartOpen({}))}>
               <CloseIcon />
             </IconButton>
@@ -62,14 +62,14 @@ export function CartMenu() {
           {/* CART LIST */}
           <Box>
             {cart.map((product) => (
-              <Box key={product.id}>
+              <Box key={product.uuid}>
                 <FlexBox p="15px 0">
                   <Box flex="1 1 40%">
                     <img
                       alt={product?.name}
                       width="123px"
                       height="164px"
-                      src={product?.get_thumbnail}
+                      src={product?.image}
                     />
                   </Box>
                   <Box flex="1 1 60%">
@@ -78,7 +78,7 @@ export function CartMenu() {
                       <Typography fontSize="bold">{product?.name}</Typography>
                       <IconButton
                         onClick={() =>
-                          dispatch(removeFromCart({ id: product.id }))
+                          dispatch(removeFromCart({ uuid: product.uuid }))
                         }
                       >
                         <CloseIcon />
@@ -93,7 +93,7 @@ export function CartMenu() {
                       >
                         <IconButton
                           onClick={() =>
-                            dispatch(decreaseCount({ id: product.id }))
+                            dispatch(decreaseCount({ uuid: product.uuid }))
                           }
                         >
                           <RemoveIcon />
@@ -103,7 +103,7 @@ export function CartMenu() {
                         </Typography>
                         <IconButton
                           onClick={() =>
-                            dispatch(increaseCount({ id: product.id }))
+                            dispatch(increaseCount({ uuid: product.uuid }))
                           }
                         >
                           <AddIcon />
@@ -123,8 +123,10 @@ export function CartMenu() {
           {/* ACTIONS */}
           <Box m="20px 0">
             <FlexBox m="20px 0">
-              <Typography fontWeight="bold">SUBTOTAL</Typography>
-              <Typography fontWeight="bold">${totalPrice}</Typography>
+              <Typography fontWeight="bold">TOTAL</Typography>
+              <Typography fontWeight="bold">
+                ${totalPrice.toFixed(2)}
+              </Typography>
             </FlexBox>
             <Button
               disabled={cart.length > 0 ? false : true}
@@ -143,7 +145,7 @@ export function CartMenu() {
                 dispatch(setIsCartOpen({}));
               }}
             >
-              Generar orden
+              CHECKOUT
             </Button>
           </Box>
         </Box>

@@ -34,7 +34,7 @@ export function AddressForm({
       {/* SHIPPING FORM */}
       <Box>
         <Typography sx={{ mb: "15px" }} fontSize="18px">
-          Dirección de envío
+          Shipping Address
         </Typography>
         <Box
           display="grid"
@@ -45,7 +45,7 @@ export function AddressForm({
           <TextField
             fullWidth
             type="text"
-            label="Nombre"
+            label="First Name"
             onBlur={handleBlur}
             onChange={handleChange}
             value={values.shippingAddress.firstName}
@@ -57,7 +57,7 @@ export function AddressForm({
           <TextField
             fullWidth
             type="text"
-            label="Apellido"
+            label="Last Name"
             onBlur={handleBlur}
             onChange={handleChange}
             value={values.shippingAddress.lastName}
@@ -69,7 +69,7 @@ export function AddressForm({
           <TextField
             fullWidth
             type="text"
-            label="País"
+            label="Country"
             onBlur={handleBlur}
             onChange={handleChange}
             value={values.shippingAddress.country}
@@ -81,7 +81,7 @@ export function AddressForm({
           <TextField
             fullWidth
             type="text"
-            label="Dirección 1"
+            label="Street Address 1"
             onBlur={handleBlur}
             onChange={handleChange}
             value={values.shippingAddress.street1}
@@ -93,7 +93,7 @@ export function AddressForm({
           <TextField
             fullWidth
             type="text"
-            label="Dirección 2"
+            label="Street Address 2 (optional)"
             onBlur={handleBlur}
             onChange={handleChange}
             value={values.shippingAddress.street2}
@@ -105,7 +105,7 @@ export function AddressForm({
           <TextField
             fullWidth
             type="text"
-            label="Ciudad"
+            label="City"
             onBlur={handleBlur}
             onChange={handleChange}
             value={values.shippingAddress.city}
@@ -117,7 +117,7 @@ export function AddressForm({
           <TextField
             fullWidth
             type="text"
-            label="Estado"
+            label="State"
             onBlur={handleBlur}
             onChange={handleChange}
             value={values.shippingAddress.state}
@@ -129,7 +129,7 @@ export function AddressForm({
           <TextField
             fullWidth
             type="text"
-            label="Código postal"
+            label="Zip Code"
             onBlur={handleBlur}
             onChange={handleChange}
             value={values.shippingAddress.zipCode}

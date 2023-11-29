@@ -24,7 +24,7 @@ export function Footer() {
             mb="30px"
             color={shades.secondary[500]}
           >
-            BOWTIQUE
+            FITNESS STORE
           </Typography>
           <div>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae
@@ -35,30 +35,30 @@ export function Footer() {
         </Box>
         <Box>
           <Typography variant="h4" fontWeight="bold" mb="30px">
-            Conócenos
+            ABOUT US
           </Typography>
-          <Typography mb="30px">Quiénes somos</Typography>
-          <Typography mb="30px">Trabaja con nosotros</Typography>
-          <Typography mb="30px">Condiciones de uso</Typography>
-          <Typography mb="30px">Aviso de privacidad</Typography>
+          <Typography mb="30px">Careers</Typography>
+          <Typography mb="30px">Our Stores</Typography>
+          <Typography mb="30px">Terms & Conditions</Typography>
+          <Typography mb="30px">Privacy Policy</Typography>
         </Box>
         <Box>
           <Typography variant="h4" fontWeight="bold" mb="30px">
-            Servicio a cliente
+            CUSTOMER CARE
           </Typography>
-          <Typography mb="30px">Centro de ayuda</Typography>
-          <Typography mb="30px">Rastrea tu orden</Typography>
-          <Typography mb="30px">Devoluciones y reembolsos</Typography>
+          <Typography mb="30px">Help Center</Typography>
+          <Typography mb="30px">Track Your Order</Typography>
+          <Typography mb="30px">Corporate & Bulk Purchasing</Typography>
+          <Typography mb="30px">Returns & Refunds</Typography>
         </Box>
         <Box width="clamp(20%, 25%, 30%)">
           <Typography variant="h4" fontWeight="bold" mb="30px">
-            Contacto
+            CONTACT US
           </Typography>
           <Typography mb="30px">
-            Av. Dirección Inventada 214, Col. Donde Sea, Alc. La Que Gustes,
-            01234
+            50 North Johnson Blvd. Washington DC 10501
           </Typography>
-          <Typography mb="30px">Correo</Typography>
+          <Typography mb="30px">email@example.com</Typography>
           <Typography mb="30px">55 0123 4567</Typography>
         </Box>
       </Box>

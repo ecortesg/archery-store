@@ -74,8 +74,8 @@ export function Checkout() {
       zip_code: values.shippingAddress.zipCode,
       email: values.email,
       phone_number: values.phoneNumber,
-      products: cart.map(({ id, count }) => ({
-        product: id,
+      products: cart.map(({ uuid, count }) => ({
+        product: uuid,
         count: count,
       })),
     };
@@ -98,10 +98,10 @@ export function Checkout() {
     <Box width="80%" m="100px auto">
       <Stepper activeStep={activeStep} sx={{ m: "20px 0" }}>
         <Step>
-          <StepLabel>Dirección de envío</StepLabel>
+          <StepLabel>Shipping Address</StepLabel>
         </Step>
         <Step>
-          <StepLabel>Contacto</StepLabel>
+          <StepLabel>Contact</StepLabel>
         </Step>
       </Stepper>
       <Box>
@@ -152,7 +152,7 @@ export function Checkout() {
                     }}
                     onClick={() => setActiveStep(activeStep - 1)}
                   >
-                    Atrás
+                    BACK
                   </Button>
                 )}
                 <Button
@@ -168,7 +168,7 @@ export function Checkout() {
                     padding: "15px 40px",
                   }}
                 >
-                  {isFirstStep ? "Siguiente" : "Proceder al pago"}
+                  {isFirstStep ? "NEXT" : "PLACE ORDER"}
                 </Button>
               </Box>
             </form>

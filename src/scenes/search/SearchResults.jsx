@@ -8,12 +8,13 @@ export function SearchResults() {
   const [products, setProducts] = useState([]);
 
   async function getProducts() {
+    const query = searchParams.get("query");
+
     const products = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/api/v1/products/search/`,
+      `${import.meta.env.VITE_BASE_URL}/api/v1/products/search/?query=${query}`,
       {
-        method: "POST",
+        method: "GET",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: searchParams.get("query") }),
       }
     );
     const productsJson = await products.json();
@@ -27,12 +28,12 @@ export function SearchResults() {
   return (
     <Box width="80%" margin="80px auto">
       <Typography variant="h3" fontWeight="bold">
-        Búsqueda
+        Search
       </Typography>
       <Typography sx={{ marginTop: "25px" }}>
-        {`${products.length} resultado${
+        {`${products.length} result${
           products.length === 1 ? "" : "s"
-        } para "${searchParams.get("query")}"`}
+        } for "${searchParams.get("query")}"`}
       </Typography>
       <Box mt="25px" width="100%">
         <Box
@@ -44,7 +45,7 @@ export function SearchResults() {
           columnGap="1.33%"
         >
           {products.map((product) => (
-            <Product product={product} key={product.id} />
+            <Product product={product} key={product.uuid} />
           ))}
         </Box>
       </Box>

@@ -12,7 +12,7 @@ export function ContactForm({
       {/* CONTACT INFO */}
       <Box>
         <Typography sx={{ mb: "15px" }} fontSize="18px">
-          Contacto
+          Contact
         </Typography>
         <TextField
           fullWidth

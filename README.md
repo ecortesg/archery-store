@@ -1,8 +1,8 @@
-# Archery Store
+# Fitness Store
 
-[Live Site](https://archery-store.vercel.app/)
+[Live Site](https://mui-ecommerce.vercel.app/)
 
-Archery e-commerce site with Stripe integration for payments. Products include bows, bow accessories, arrows, and shooting accessories.
+Fitness e-commerce site with Stripe integration for payments.
 
 <img src="public/archery-store.png" width="960"><br/>
 

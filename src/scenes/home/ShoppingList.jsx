@@ -3,44 +3,53 @@ import { Box, Typography, Tab, Tabs, useMediaQuery } from "@mui/material";
 import { Product } from "../../components/Product";
 
 export function ShoppingList() {
-  const [value, setValue] = useState("all");
+  const [value, setValue] = useState("best-sellers");
   const isNonMobile = useMediaQuery("(min-width:600px");
-  const [products, setProducts] = useState([]);
+  const [productsBestSellers, setProductsBestSellers] = useState([]);
+  const [productsNewArrivals, setProductsNewArrivals] = useState([]);
+  const [productsOnSale, setProductsOnSale] = useState([]);
 
   function handleChange(event, newValue) {
     setValue(newValue);
   }
 
-  async function getProducts() {
+  async function getProductsBestSellers() {
     const products = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/api/v1/latest-products/`,
+      `${import.meta.env.VITE_BASE_URL}/api/v1/products/best-sellers/`,
       { method: "GET" }
     );
     const productsJson = await products.json();
-    setProducts(productsJson);
+    setProductsBestSellers(productsJson);
+  }
+
+  async function getProductsNewArrivals() {
+    const products = await fetch(
+      `${import.meta.env.VITE_BASE_URL}/api/v1/products/new-arrivals/`,
+      { method: "GET" }
+    );
+    const productsJson = await products.json();
+    setProductsNewArrivals(productsJson);
+  }
+
+  async function getProductsOnSale() {
+    const products = await fetch(
+      `${import.meta.env.VITE_BASE_URL}/api/v1/products/on-sale/`,
+      { method: "GET" }
+    );
+    const productsJson = await products.json();
+    setProductsOnSale(productsJson);
   }
 
   useEffect(() => {
-    getProducts();
+    getProductsBestSellers();
+    getProductsNewArrivals();
+    getProductsOnSale();
   }, []);
-
-  const bowProducts = products.filter(
-    (product) => product.category.name === "Arcos"
-  );
-  const bowAccesoryProducts = products.filter(
-    (product) => product.category.name === "Accesorios para arco"
-  );
-  const shootingAccesoryProducts = products.filter(
-    (product) => product.category.name === "Accesorios de tiro"
-  );
-  const arrowProducts = products.filter(
-    (product) => product.category.name === "Flechas"
-  );
 
   return (
     <Box width="80%" margin="80px auto">
       <Typography variant="h3" textAlign="center">
-        Conoce nuestros <b>productos</b>
+        Featured <b>Products</b>
       </Typography>
       <Tabs
         textColor="primary"
@@ -51,11 +60,9 @@ export function ShoppingList() {
         TabIndicatorProps={{ sx: { display: isNonMobile ? "block" : "none" } }}
         sx={{ m: "25px", "& .MuiTabs-flexContainer": { flexWrap: "wrap" } }}
       >
-        <Tab label="TODOS" value="all" />
-        <Tab label="ARCOS" value="arcos" />
-        <Tab label="ACCESORIOS PARA ARCO" value="accesoriosParaArco" />
-        <Tab label="ACCESORIOS DE TIRO" value="accesoriosDeTiro" />
-        <Tab label="FLECHAS" value="flechas" />
+        <Tab label="New Arrivals" value="new-arrivals" />
+        <Tab label="Best Sellers" value="best-sellers" />
+        <Tab label="Sale Items" value="on-sale" />
       </Tabs>
       <Box
         margin="0 auto"
@@ -65,29 +72,19 @@ export function ShoppingList() {
         rowGap="20px"
         columnGap="1.33%"
       >
-        {value === "all" &&
-          products.map((product) => (
-            <Product product={product} key={product.id} />
+        {value === "new-arrivals" &&
+          productsNewArrivals.map((product) => (
+            <Product product={product} key={product.uuid} />
           ))}
 
-        {value === "arcos" &&
-          bowProducts.map((product) => (
-            <Product product={product} key={product.id} />
+        {value === "best-sellers" &&
+          productsBestSellers.map((product) => (
+            <Product product={product} key={product.uuid} />
           ))}
 
-        {value === "accesoriosParaArco" &&
-          bowAccesoryProducts.map((product) => (
-            <Product product={product} key={product.id} />
-          ))}
-
-        {value === "accesoriosDeTiro" &&
-          shootingAccesoryProducts.map((product) => (
-            <Product product={product} key={product.id} />
-          ))}
-
-        {value === "flechas" &&
-          arrowProducts.map((product) => (
-            <Product product={product} key={product.id} />
+        {value === "on-sale" &&
+          productsOnSale.map((product) => (
+            <Product product={product} key={product.uuid} />
           ))}
       </Box>
     </Box>

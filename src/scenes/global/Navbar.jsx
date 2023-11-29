@@ -19,7 +19,7 @@ export function Navbar() {
   function handleSubmit(e) {
     e.preventDefault();
     navigate({
-      pathname: "/search",
+      pathname: "/search/",
       search: createSearchParams({ query: searchInput }).toString(),
     });
   }
@@ -49,7 +49,7 @@ export function Navbar() {
           sx={{ "&:hover": { cursor: "pointer" }, marginRight: "28px" }}
           color={shades.secondary[500]}
         >
-          BOWTIQUE
+          FITNESS STORE
         </Box>
         <Box
           display="flex"
@@ -59,7 +59,7 @@ export function Navbar() {
         >
           <form style={{ display: "flex" }} onSubmit={handleSubmit}>
             <TextField
-              label="Buscar"
+              label="Search"
               size="small"
               onChange={(e) => handleChange(e.target.value)}
               sx={{ minWidth: 0 }}

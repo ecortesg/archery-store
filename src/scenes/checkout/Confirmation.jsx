@@ -4,8 +4,8 @@ export function Confirmation() {
   return (
     <Box m="90px auto" width="80%" height="50vh">
       <Alert severity="success">
-        <AlertTitle>Recibimos tu pedido</AlertTitle>
-        Gracias por tu compra
+        <AlertTitle>Success</AlertTitle>
+        Thank you for your purchase.
       </Alert>
     </Box>
   );
