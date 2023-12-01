@@ -43,6 +43,7 @@ export function MainCarousel() {
   return (
     <Carousel
       infiniteLoop={true}
+      autoPlay={true}
       showThumbs={false}
       showIndicators={false}
       showStatus={false}
@@ -77,20 +78,21 @@ export function MainCarousel() {
         </IconButton>
       )}
     >
-      {gallery.map((image, index) => (
-        <Box key={image.uuid}>
-          <img
-            src={image.image}
-            alt={`carousel-${index}`}
-            style={{
-              width: "100%",
-              height: imageHeight,
-              objectFit: "cover",
-              backgroundAttachment: "fixed",
-            }}
-          />
-        </Box>
-      ))}
+      {gallery.length &&
+        gallery.map((image) => (
+          <Box key={image.uuid}>
+            <img
+              src={image.image}
+              alt={image.name}
+              style={{
+                width: "100%",
+                height: imageHeight,
+                objectFit: "cover",
+                backgroundAttachment: "fixed",
+              }}
+            />
+          </Box>
+        ))}
     </Carousel>
   );
 }
