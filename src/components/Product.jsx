@@ -8,8 +8,16 @@ export function Product({ product, width }) {
     palette: { neutral },
   } = useTheme();
 
-  const { uuid, name, get_absolute_url, price, image, category } =
-    product || {};
+  const {
+    uuid,
+    name,
+    get_absolute_url,
+    price,
+    discount,
+    discounted_price,
+    image,
+    category,
+  } = product || {};
 
   return (
     <Box width={width}>
@@ -28,7 +36,21 @@ export function Product({ product, width }) {
           {category.name}
         </Typography>
         <Typography>{name}</Typography>
-        <Typography fontWeight="bold">${price}</Typography>
+        <Box display="flex" alignItems="center">
+          <Typography fontWeight="bold" style={{ fontSize: "1.2em" }}>
+            ${discounted_price}
+          </Typography>
+          {discount !== "0.00" && (
+            <Typography
+              style={{
+                textDecoration: "line-through",
+                marginLeft: "8px",
+              }}
+            >
+              ${price}
+            </Typography>
+          )}
+        </Box>
       </Box>
     </Box>
   );

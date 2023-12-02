@@ -26,7 +26,7 @@ export function CartMenu() {
   const isCartOpen = useSelector((state) => state.cart.isCartOpen);
 
   const totalPrice = cart.reduce((total, product) => {
-    return total + product.count * product.price;
+    return total + product.count * product.discounted_price;
   }, 0);
 
   return (
@@ -111,7 +111,7 @@ export function CartMenu() {
                       </Box>
                       {/* PRODUCT PRICE */}
                       <Typography fontWeight="bold">
-                        ${product?.price}
+                        ${product?.discounted_price}
                       </Typography>
                     </FlexBox>
                   </Box>

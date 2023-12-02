@@ -42,7 +42,15 @@ export function ProductDetails() {
     getProducts();
   }, [location]);
 
-  const { name, description, price, image, category } = product || {};
+  const {
+    name,
+    description,
+    price,
+    discount,
+    discounted_price,
+    image,
+    category,
+  } = product || {};
 
   return (
     <Box width="80%" m="80px auto">
@@ -66,7 +74,21 @@ export function ProductDetails() {
 
           <Box m="65px 0 25px 0">
             <Typography variant="h3">{name}</Typography>
-            <Typography>${price}</Typography>
+            <Box display="flex" alignItems="center">
+              <Typography fontWeight="bold" style={{ fontSize: "1.2em" }}>
+                ${discounted_price}
+              </Typography>
+              {discount !== "0.00" && (
+                <Typography
+                  style={{
+                    textDecoration: "line-through",
+                    marginLeft: "8px",
+                  }}
+                >
+                  ${price}
+                </Typography>
+              )}
+            </Box>
             <Typography sx={{ mt: "20px" }}>{description}</Typography>
           </Box>
 
