@@ -1,4 +1,4 @@
-# Fitness Store
+# React/Material UI Ecommerce Store
 
 [Live Site](https://mui-ecommerce.vercel.app/)
 
