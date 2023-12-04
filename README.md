@@ -4,7 +4,7 @@
 
 Fitness e-commerce site with Stripe integration for payments.
 
-<img src="public/archery-store.png" width="960"><br/>
+<img src="public/mui-ecommerce.png" width="960"><br/>
 
 ## Tech Stack
 
