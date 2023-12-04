@@ -1,28 +1,39 @@
 import { useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Product } from "../../components/Product";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Button } from "@mui/material";
 
 export function SearchResults() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
+  const [nextPage, setNextPage] = useState(null);
+  const [count, setCount] = useState(0);
+  const query = searchParams.get("query");
 
-  async function getProducts() {
-    const query = searchParams.get("query");
+  async function fetchProducts(url) {
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      setProducts((prevProducts) => [...prevProducts, ...data.results]);
+      setNextPage(data.next);
+      setCount(data.count);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  }
 
-    const products = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/api/v1/products/search/?query=${query}`,
-      {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-    const productsJson = await products.json();
-    setProducts(productsJson);
+  function loadMoreProducts() {
+    if (nextPage) {
+      fetchProducts(nextPage);
+    }
   }
 
   useEffect(() => {
-    getProducts();
+    setProducts([]);
+    const apiUrl = `${
+      import.meta.env.VITE_BASE_URL
+    }/api/v1/products/search/?page=1&limit=20&query=${query}`;
+    fetchProducts(apiUrl);
   }, [searchParams]);
 
   return (
@@ -31,9 +42,7 @@ export function SearchResults() {
         Search
       </Typography>
       <Typography sx={{ marginTop: "25px" }}>
-        {`${products.length} result${
-          products.length === 1 ? "" : "s"
-        } for "${searchParams.get("query")}"`}
+        {`${count} result${count === 1 ? "" : "s"} for "${query}"`}
       </Typography>
       <Box mt="25px" width="100%">
         <Box
@@ -48,6 +57,17 @@ export function SearchResults() {
             <Product product={product} key={product.uuid} />
           ))}
         </Box>
+        {nextPage && (
+          <Box textAlign="center" mt="40px">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={loadMoreProducts}
+            >
+              Load More
+            </Button>
+          </Box>
+        )}
       </Box>
     </Box>
   );

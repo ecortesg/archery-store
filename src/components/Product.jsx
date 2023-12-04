@@ -27,7 +27,7 @@ export function Product({ product, width }) {
           width="300px"
           height="200px"
           src={image}
-          onClick={() => navigate(`/products${get_absolute_url}/`)}
+          onClick={() => navigate(`/products${get_absolute_url}`)}
           style={{ cursor: "pointer", objectFit: "contain" }}
         />
       </Box>

@@ -70,6 +70,7 @@ export function CartMenu() {
                       width="123px"
                       height="164px"
                       src={product?.image}
+                      style={{ objectFit: "contain" }}
                     />
                   </Box>
                   <Box flex="1 1 60%">
