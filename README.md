@@ -2,7 +2,7 @@
 
 [Live Site](https://mui-ecommerce.vercel.app/)
 
-Fitness e-commerce site with Stripe integration for payments.
+Ecommerce site with Stripe integration for payments.
 
 <img src="public/mui-ecommerce.png" width="960"><br/>
 
