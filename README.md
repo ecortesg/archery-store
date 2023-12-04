@@ -1,4 +1,4 @@
-# React/Material UI Ecommerce Store
+# React/Material UI Ecommerce
 
 [Live Site](https://mui-ecommerce.vercel.app/)
 
