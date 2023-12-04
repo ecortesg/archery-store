@@ -32,7 +32,7 @@ export function SearchResults() {
     setProducts([]);
     const apiUrl = `${
       import.meta.env.VITE_BASE_URL
-    }/api/v1/products/search/?page=1&limit=20&query=${query}`;
+    }/api/v1/products/search/?page=1&limit=24&query=${query}`;
     fetchProducts(apiUrl);
   }, [searchParams]);
 
