@@ -81,7 +81,7 @@ export function Checkout() {
     };
 
     const response = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/api/v1/checkout/`,
+      `${import.meta.env.VITE_BASE_URL}/api/v1/order/checkout/`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },

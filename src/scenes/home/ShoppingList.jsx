@@ -15,7 +15,7 @@ export function ShoppingList() {
 
   async function getProductsBestSellers() {
     const products = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/api/v1/products/best-sellers/`,
+      `${import.meta.env.VITE_BASE_URL}/api/v1/product/best-sellers/`,
       { method: "GET" }
     );
     const productsJson = await products.json();
@@ -24,7 +24,7 @@ export function ShoppingList() {
 
   async function getProductsNewArrivals() {
     const products = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/api/v1/products/new-arrivals/`,
+      `${import.meta.env.VITE_BASE_URL}/api/v1/product/new-arrivals/`,
       { method: "GET" }
     );
     const productsJson = await products.json();
@@ -33,7 +33,7 @@ export function ShoppingList() {
 
   async function getProductsOnSale() {
     const products = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/api/v1/products/on-sale/`,
+      `${import.meta.env.VITE_BASE_URL}/api/v1/product/on-sale/`,
       { method: "GET" }
     );
     const productsJson = await products.json();

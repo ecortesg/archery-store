@@ -29,7 +29,7 @@ export function MainCarousel() {
 
   async function getGallery() {
     const images = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/api/v1/carousel-images/`,
+      `${import.meta.env.VITE_BASE_URL}/api/v1/home/carousel-images/`,
       { method: "GET" }
     );
     const imagesJson = await images.json();
