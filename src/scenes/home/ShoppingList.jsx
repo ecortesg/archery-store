@@ -58,7 +58,8 @@ export function ShoppingList() {
         onChange={handleChange}
         centered
         TabIndicatorProps={{ sx: { display: isNonMobile ? "block" : "none" } }}
-        sx={{ m: "25px", "& .MuiTabs-flexContainer": { flexWrap: "wrap" } }}
+        sx={{ m: "25px" }}
+        variant={isNonMobile ? "" : "fullWidth"}
       >
         <Tab label="New Arrivals" value="new-arrivals" />
         <Tab label="Best Sellers" value="best-sellers" />
