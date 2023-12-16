@@ -2,6 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Product } from "../../components/Product";
 import { Box, Typography, Button } from "@mui/material";
+import { client } from "../../api";
 
 export function SearchResults() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -12,13 +13,13 @@ export function SearchResults() {
 
   async function fetchProducts(url) {
     try {
-      const response = await fetch(url);
-      const data = await response.json();
+      const response = await client.get(url);
+      const data = await response.data;
       setProducts((prevProducts) => [...prevProducts, ...data.results]);
       setNextPage(data.next);
       setCount(data.count);
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error("Error occurred:", error);
     }
   }
 
@@ -30,9 +31,7 @@ export function SearchResults() {
 
   useEffect(() => {
     setProducts([]);
-    const apiUrl = `${
-      import.meta.env.VITE_BASE_URL
-    }/api/v1/product/search/?page=1&limit=20&query=${query}`;
+    const apiUrl = `api/v1/product/search/?page=1&limit=20&query=${query}`;
     fetchProducts(apiUrl);
   }, [searchParams]);
 

@@ -7,6 +7,7 @@ import { AddressForm } from "./AddressForm";
 import { ContactForm } from "./ContactForm";
 import { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
+import { client } from "../../api";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
@@ -80,18 +81,22 @@ export function Checkout() {
       })),
     };
 
-    const response = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/api/v1/order/checkout/`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestBody),
-      }
-    );
-
-    const session = await response.json();
-
-    await stripe.redirectToCheckout({ sessionId: session.id });
+    try {
+      console.log(requestBody);
+      const response = await client.post(
+        "api/v1/order/checkout/",
+        requestBody,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      console.log(response);
+      const data = await response.data;
+      console.log(data);
+      await stripe.redirectToCheckout({ sessionId: data.id });
+    } catch (error) {
+      console.error("Error occurred:", error);
+    }
   }
 
   return (

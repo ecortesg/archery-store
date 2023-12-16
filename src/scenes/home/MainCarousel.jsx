@@ -5,6 +5,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { shades } from "../../theme";
+import { client } from "../../api";
 
 // // Imports all images from the assets folder
 // function importAll(r) {
@@ -28,12 +29,9 @@ export function MainCarousel() {
   const imageHeight = isNonMobile ? "66vh" : "700px";
 
   async function getGallery() {
-    const images = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/api/v1/home/carousel-images/`,
-      { method: "GET" }
-    );
-    const imagesJson = await images.json();
-    setGallery(imagesJson);
+    const imagesResponse = await client.get("api/v1/home/carousel-images/");
+    const images = await imagesResponse.data;
+    setGallery(images);
   }
 
   useEffect(() => {

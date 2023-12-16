@@ -7,6 +7,7 @@ import { shades } from "../../theme";
 import { Product } from "../../components/Product";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../state";
+import { client } from "../../api";
 
 export function ProductDetails() {
   const { productId } = useParams();
@@ -16,25 +17,18 @@ export function ProductDetails() {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const baseURL = import.meta.env.VITE_BASE_URL;
-
   async function getProduct() {
-    const product = await fetch(`${baseURL}/api/v1/product/${productId}/`, {
-      method: "GET",
-    });
-    const productJson = await product.json();
-    setProduct(productJson);
+    const productResponse = await client.get(`api/v1/product/${productId}/`);
+    const product = await productResponse.data;
+    setProduct(product);
   }
 
   async function getProducts() {
-    const products = await fetch(
-      `${baseURL}/api/v1/product/${productId}/related/`,
-      {
-        method: "GET",
-      }
+    const productsResponse = await client.get(
+      `api/v1/product/${productId}/related/`
     );
-    const productsJson = await products.json();
-    setProducts(productsJson);
+    const products = productsResponse.data;
+    setProducts(products);
   }
 
   useEffect(() => {

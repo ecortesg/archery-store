@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Box, Typography, Tab, Tabs, useMediaQuery } from "@mui/material";
 import { Product } from "../../components/Product";
+import { client } from "../../api";
 
 export function ShoppingList() {
   const [value, setValue] = useState("best-sellers");
@@ -14,30 +15,21 @@ export function ShoppingList() {
   }
 
   async function getProductsBestSellers() {
-    const products = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/api/v1/product/best-sellers/`,
-      { method: "GET" }
-    );
-    const productsJson = await products.json();
-    setProductsBestSellers(productsJson);
+    const productsResponse = await client.get("api/v1/product/best-sellers/");
+    const products = await productsResponse.data;
+    setProductsBestSellers(products);
   }
 
   async function getProductsNewArrivals() {
-    const products = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/api/v1/product/new-arrivals/`,
-      { method: "GET" }
-    );
-    const productsJson = await products.json();
-    setProductsNewArrivals(productsJson);
+    const productsResponse = await client.get("api/v1/product/new-arrivals/");
+    const products = await productsResponse.data;
+    setProductsNewArrivals(products);
   }
 
   async function getProductsOnSale() {
-    const products = await fetch(
-      `${import.meta.env.VITE_BASE_URL}/api/v1/product/on-sale/`,
-      { method: "GET" }
-    );
-    const productsJson = await products.json();
-    setProductsOnSale(productsJson);
+    const productsResponse = await client.get("api/v1/product/on-sale/");
+    const products = await productsResponse.data;
+    setProductsOnSale(products);
   }
 
   useEffect(() => {
@@ -59,7 +51,7 @@ export function ShoppingList() {
         centered
         TabIndicatorProps={{ sx: { display: isNonMobile ? "block" : "none" } }}
         sx={{ m: "25px" }}
-        variant={isNonMobile ? "" : "fullWidth"}
+        variant={isNonMobile ? "standard" : "fullWidth"}
       >
         <Tab label="New Arrivals" value="new-arrivals" />
         <Tab label="Best Sellers" value="best-sellers" />
