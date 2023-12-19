@@ -29,19 +29,22 @@ const initialValues = {
 const checkoutSchema = [
   yup.object().shape({
     shippingAddress: yup.object().shape({
-      firstName: yup.string().required("Requerido"),
-      lastName: yup.string().required("Requerido"),
-      country: yup.string().required("Requerido"),
-      street1: yup.string().required("Requerido"),
+      firstName: yup.string().required("Required"),
+      lastName: yup.string().required("Required"),
+      country: yup.string().required("Required"),
+      street1: yup.string().required("Required"),
       street2: yup.string(),
-      city: yup.string().required("Requerido"),
-      state: yup.string().required("Requerido"),
-      zipCode: yup.string().required("Requerido"),
+      city: yup.string().required("Required"),
+      state: yup.string().required("Required"),
+      zipCode: yup.string().required("Required"),
     }),
   }),
   yup.object().shape({
-    email: yup.string().required("Requerido").email("Correo inválido"),
-    phoneNumber: yup.string().required("Requerido"),
+    email: yup
+      .string()
+      .required("Required")
+      .email("Please enter a valid email address"),
+    phoneNumber: yup.string().required("Required"),
   }),
 ];
 

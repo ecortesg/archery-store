@@ -18,10 +18,12 @@ export function Navbar() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    navigate({
-      pathname: "/search/",
-      search: createSearchParams({ query: searchInput }).toString(),
-    });
+    if (searchInput) {
+      navigate({
+        pathname: "/search/",
+        search: createSearchParams({ query: searchInput }).toString(),
+      });
+    }
   }
 
   return (
