@@ -142,7 +142,7 @@ export function CartMenu() {
                 "&:disabled": { backgroundColor: shades.primary[100] },
               }}
               onClick={() => {
-                navigate("/checkout");
+                navigate("/checkout/");
                 dispatch(setIsCartOpen({}));
               }}
             >

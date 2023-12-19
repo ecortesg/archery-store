@@ -28,12 +28,12 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route
-            path="/products/:productCategory/:productName/:productId/"
+            path="products/:productCategory/:productName/:productId/"
             element={<ProductDetails />}
           />
-          <Route path="/search/" element={<SearchResults />} />
-          <Route path="/checkout/" element={<Checkout />} />
-          <Route path="/checkout/success/" element={<Confirmation />} />
+          <Route path="search/" element={<SearchResults />} />
+          <Route path="checkout/" element={<Checkout />} />
+          <Route path="checkout/success/" element={<Confirmation />} />
         </Routes>
         <CartMenu />
         <Footer />
