@@ -2,8 +2,12 @@ import { Badge, Box, IconButton, TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { createSearchParams, useNavigate } from "react-router-dom";
 import { shades } from "../../theme";
-import { SearchOutlined, ShoppingCartOutlined } from "@mui/icons-material";
-import { setIsCartOpen } from "../../state";
+import {
+  SearchOutlined,
+  ShoppingCartOutlined,
+  PersonOutline,
+} from "@mui/icons-material";
+import { setIsCartOpen } from "../../state/cartSlice";
 import { useState } from "react";
 
 export function Navbar() {
@@ -20,7 +24,7 @@ export function Navbar() {
     e.preventDefault();
     if (searchInput) {
       navigate({
-        pathname: "/search/",
+        pathname: "/search",
         search: createSearchParams({ query: searchInput }).toString(),
       });
     }
@@ -70,6 +74,12 @@ export function Navbar() {
               <SearchOutlined />
             </IconButton>
           </form>
+          <IconButton
+            onClick={() => navigate("/account")}
+            sx={{ color: "black" }}
+          >
+            <PersonOutline />
+          </IconButton>
           <Badge
             badgeContent={cart.length}
             color="secondary"

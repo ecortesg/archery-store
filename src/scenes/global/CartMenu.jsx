@@ -10,7 +10,7 @@ import {
   increaseCount,
   removeFromCart,
   setIsCartOpen,
-} from "../../state";
+} from "../../state/cartSlice";
 import { useNavigate } from "react-router-dom";
 
 const FlexBox = styled(Box)`
@@ -142,7 +142,7 @@ export function CartMenu() {
                 "&:disabled": { backgroundColor: shades.primary[100] },
               }}
               onClick={() => {
-                navigate("/checkout/");
+                navigate("/checkout");
                 dispatch(setIsCartOpen({}));
               }}
             >

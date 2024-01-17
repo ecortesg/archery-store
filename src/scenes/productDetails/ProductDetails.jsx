@@ -1,40 +1,33 @@
 import { IconButton, Box, Typography, Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { useLocation, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useState } from "react";
 import { shades } from "../../theme";
 import { Product } from "../../components/Product";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../../state";
-import { client } from "../../api";
+import { addToCart } from "../../state/cartSlice";
+import {
+  useProductDetailsQuery,
+  useRelatedProductsQuery,
+} from "../../api/productApiSlice";
 
 export function ProductDetails() {
   const { productId } = useParams();
   const [count, setCount] = useState(1);
-  const [product, setProduct] = useState(null);
-  const [products, setProducts] = useState([]);
-  const location = useLocation();
   const dispatch = useDispatch();
 
-  async function getProduct() {
-    const productResponse = await client.get(`api/v1/product/${productId}/`);
-    const product = await productResponse.data;
-    setProduct(product);
-  }
+  const {
+    data: product,
+    isLoading: isProductLoading,
+    isError: isProductError,
+  } = useProductDetailsQuery(productId);
 
-  async function getProducts() {
-    const productsResponse = await client.get(
-      `api/v1/product/${productId}/related/`
-    );
-    const products = productsResponse.data;
-    setProducts(products);
-  }
-
-  useEffect(() => {
-    getProduct();
-    getProducts();
-  }, [location]);
+  const {
+    data: relatedProducts,
+    isLoading: isRelatedProductsLoading,
+    isError: isRelatedProductsError,
+  } = useRelatedProductsQuery(productId);
 
   const {
     name,
@@ -45,6 +38,14 @@ export function ProductDetails() {
     image,
     category,
   } = product || {};
+
+  if (isProductLoading || isRelatedProductsLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (isProductError || isRelatedProductsError) {
+    return <p>Error loading data</p>;
+  }
 
   return (
     <Box width="80%" m="80px auto">
@@ -139,7 +140,7 @@ export function ProductDetails() {
           rowGap="20px"
           columnGap="1.33%"
         >
-          {products.slice(0, 6).map((product) => (
+          {relatedProducts.slice(0, 6).map((product) => (
             <Product product={product} key={product.uuid} />
           ))}
         </Box>

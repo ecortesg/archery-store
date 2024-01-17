@@ -7,9 +7,20 @@ import CssBaseLine from "@mui/material/CssBaseline";
 import { theme } from "./theme";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
-import cartReducer from "./state";
+import cartReducer from "./state/cartSlice";
+import authReducer from "./state/authSlice";
+import { apiSlice } from "./api/api";
 
-const store = configureStore({ reducer: { cart: cartReducer } });
+const store = configureStore({
+  reducer: {
+    cart: cartReducer,
+    auth: authReducer,
+    [apiSlice.reducerPath]: apiSlice.reducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(apiSlice.middleware),
+  devTools: true, // TODO make false in production
+});
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

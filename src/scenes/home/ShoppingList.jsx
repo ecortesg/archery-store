@@ -1,42 +1,41 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Box, Typography, Tab, Tabs, useMediaQuery } from "@mui/material";
 import { Product } from "../../components/Product";
-import { client } from "../../api";
+import {
+  useBestSellersQuery,
+  useNewArrivalsQuery,
+  useSaleItemsQuery,
+} from "../../api/productApiSlice";
 
 export function ShoppingList() {
-  const [value, setValue] = useState("best-sellers");
+  const [tab, setTab] = useState("best-sellers");
   const isNonMobile = useMediaQuery("(min-width:600px");
-  const [productsBestSellers, setProductsBestSellers] = useState([]);
-  const [productsNewArrivals, setProductsNewArrivals] = useState([]);
-  const [productsOnSale, setProductsOnSale] = useState([]);
+
+  const bestSellersQuery = useBestSellersQuery();
+  const newArrivalsQuery = useNewArrivalsQuery();
+  const saleItemsQuery = useSaleItemsQuery();
 
   function handleChange(event, newValue) {
-    setValue(newValue);
+    setTab(newValue);
   }
 
-  async function getProductsBestSellers() {
-    const productsResponse = await client.get("api/v1/product/best-sellers/");
-    const products = await productsResponse.data;
-    setProductsBestSellers(products);
-  }
+  function renderProducts(selectedValue, query, tabName) {
+    if (selectedValue !== tabName) return null;
 
-  async function getProductsNewArrivals() {
-    const productsResponse = await client.get("api/v1/product/new-arrivals/");
-    const products = await productsResponse.data;
-    setProductsNewArrivals(products);
-  }
+    const { isLoading, isError, error, isSuccess, data } = query;
 
-  async function getProductsOnSale() {
-    const productsResponse = await client.get("api/v1/product/on-sale/");
-    const products = await productsResponse.data;
-    setProductsOnSale(products);
-  }
+    if (isLoading) {
+      return <Typography>Loading...</Typography>;
+    } else if (isError) {
+      return <Typography>{JSON.stringify(error)}</Typography>;
+    } else if (isSuccess && data) {
+      return data.map((product) => (
+        <Product product={product} key={product.uuid} />
+      ));
+    }
 
-  useEffect(() => {
-    getProductsBestSellers();
-    getProductsNewArrivals();
-    getProductsOnSale();
-  }, []);
+    return null;
+  }
 
   return (
     <Box width="80%" margin="80px auto">
@@ -46,7 +45,7 @@ export function ShoppingList() {
       <Tabs
         textColor="primary"
         indicatorColor="primary"
-        value={value}
+        value={tab}
         onChange={handleChange}
         centered
         TabIndicatorProps={{ sx: { display: isNonMobile ? "block" : "none" } }}
@@ -65,20 +64,9 @@ export function ShoppingList() {
         rowGap="20px"
         columnGap="1.33%"
       >
-        {value === "new-arrivals" &&
-          productsNewArrivals.map((product) => (
-            <Product product={product} key={product.uuid} />
-          ))}
-
-        {value === "best-sellers" &&
-          productsBestSellers.map((product) => (
-            <Product product={product} key={product.uuid} />
-          ))}
-
-        {value === "on-sale" &&
-          productsOnSale.map((product) => (
-            <Product product={product} key={product.uuid} />
-          ))}
+        {renderProducts(tab, newArrivalsQuery, "new-arrivals")}
+        {renderProducts(tab, bestSellersQuery, "best-sellers")}
+        {renderProducts(tab, saleItemsQuery, "on-sale")}
       </Box>
     </Box>
   );
