@@ -2,13 +2,10 @@ import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { Product } from "../../components/Product";
 import { Box, Typography, Button } from "@mui/material";
-import {
-  useProductSearchQuery,
-  useLazyProductSearchQuery,
-} from "../../api/productApiSlice";
+import { useProductSearchQuery, useLazyProductSearchQuery } from "../../api";
 
 export function SearchResults() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const query = searchParams.get("query");
   const [page, setPage] = useState(1);
   const { data, isLoading, isError, error } = useProductSearchQuery({

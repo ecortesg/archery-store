@@ -9,7 +9,7 @@ import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import cartReducer from "./state/cartSlice";
 import authReducer from "./state/authSlice";
-import { apiSlice } from "./api/api";
+import { apiSlice } from "./api/index";
 
 const store = configureStore({
   reducer: {

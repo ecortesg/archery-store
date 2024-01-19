@@ -14,7 +14,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { jwtDecode } from "jwt-decode";
 import { useState } from "react";
-import { useLoginMutation } from "../../api/userApiSlice";
+import { useLoginMutation } from "../../api";
 
 const initialValues = {
   email: "",

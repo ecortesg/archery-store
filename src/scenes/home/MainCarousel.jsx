@@ -3,26 +3,10 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import { useCarouselImagesQuery } from "../../api/homeApiSlice";
 
-export function MainCarousel() {
+export function MainCarousel({ carouselImages }) {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const imageHeight = isNonMobile ? "66vh" : "700px";
-
-  const {
-    data: carouselImages,
-    isLoading,
-    isError,
-    error,
-  } = useCarouselImagesQuery();
-
-  if (isLoading) {
-    return <Typography>Loading...</Typography>;
-  }
-
-  if (isError) {
-    return <Typography>{JSON.stringify(error)}</Typography>;
-  }
 
   return (
     <Carousel

@@ -39,11 +39,12 @@ function App() {
           <Route path="/search" element={<SearchResults />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/checkout/success" element={<Confirmation />} />
+
           {/* Protected routes */}
           <Route element={<RequireAuth />}>
             <Route path="/account" element={<Account />} />
             <Route path="/checkout" element={<Checkout />} />
-            <Route path="/checkout/success" element={<Confirmation />} />
           </Route>
         </Routes>
         <CartMenu />

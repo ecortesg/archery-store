@@ -1,40 +1,21 @@
 import { useState } from "react";
 import { Box, Typography, Tab, Tabs, useMediaQuery } from "@mui/material";
 import { Product } from "../../components/Product";
-import {
-  useBestSellersQuery,
-  useNewArrivalsQuery,
-  useSaleItemsQuery,
-} from "../../api/productApiSlice";
 
-export function ShoppingList() {
+export function ShoppingList({ newArrivals, bestSellers, saleItems }) {
   const [tab, setTab] = useState("best-sellers");
   const isNonMobile = useMediaQuery("(min-width:600px");
-
-  const bestSellersQuery = useBestSellersQuery();
-  const newArrivalsQuery = useNewArrivalsQuery();
-  const saleItemsQuery = useSaleItemsQuery();
 
   function handleChange(event, newValue) {
     setTab(newValue);
   }
 
-  function renderProducts(selectedValue, query, tabName) {
+  function renderProducts(selectedValue, tabName, data) {
     if (selectedValue !== tabName) return null;
 
-    const { isLoading, isError, error, isSuccess, data } = query;
-
-    if (isLoading) {
-      return <Typography>Loading...</Typography>;
-    } else if (isError) {
-      return <Typography>{JSON.stringify(error)}</Typography>;
-    } else if (isSuccess && data) {
-      return data.map((product) => (
-        <Product product={product} key={product.uuid} />
-      ));
-    }
-
-    return null;
+    return data.map((product) => (
+      <Product product={product} key={product.uuid} />
+    ));
   }
 
   return (
@@ -64,9 +45,9 @@ export function ShoppingList() {
         rowGap="20px"
         columnGap="1.33%"
       >
-        {renderProducts(tab, newArrivalsQuery, "new-arrivals")}
-        {renderProducts(tab, bestSellersQuery, "best-sellers")}
-        {renderProducts(tab, saleItemsQuery, "on-sale")}
+        {renderProducts(tab, "new-arrivals", newArrivals)}
+        {renderProducts(tab, "best-sellers", bestSellers)}
+        {renderProducts(tab, "on-sale", saleItems)}
       </Box>
     </Box>
   );

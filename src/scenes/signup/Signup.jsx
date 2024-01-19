@@ -11,7 +11,7 @@ import * as yup from "yup";
 import { shades } from "../../theme";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useSignupMutation } from "../../api/userApiSlice";
+import { useSignupMutation } from "../../api";
 
 const initialValues = {
   email: "",

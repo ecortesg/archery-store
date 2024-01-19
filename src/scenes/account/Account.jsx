@@ -1,13 +1,11 @@
 import { Box, Typography, Button } from "@mui/material";
-import { useSelector, useDispatch } from "react-redux";
-import { selectCurrentUser } from "../../state/authSlice";
+import { useDispatch } from "react-redux";
 import { logOut } from "../../state/authSlice";
 import { shades } from "../../theme";
 import { useNavigate } from "react-router-dom";
-import { useAccountQuery } from "../../api/userApiSlice";
+import { useAccountQuery } from "../../api";
 
 export function Account() {
-  const user = useSelector(selectCurrentUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

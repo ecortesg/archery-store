@@ -14,7 +14,7 @@ import { AddressForm } from "./AddressForm";
 import { ContactForm } from "./ContactForm";
 import { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
-import { useCheckoutMutation } from "../../api/checkoutApiSlice";
+import { useCheckoutMutation } from "../../api";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
