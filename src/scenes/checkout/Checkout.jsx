@@ -1,5 +1,12 @@
 import { useSelector } from "react-redux";
-import { Box, Button, Stepper, Step, StepLabel } from "@mui/material";
+import {
+  Box,
+  Button,
+  Stepper,
+  Step,
+  StepLabel,
+  Typography,
+} from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { shades } from "../../theme";
@@ -7,7 +14,7 @@ import { AddressForm } from "./AddressForm";
 import { ContactForm } from "./ContactForm";
 import { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
-import { client } from "../../api";
+import { useCheckoutMutation } from "../../api";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
@@ -53,53 +60,48 @@ export function Checkout() {
   const cart = useSelector((state) => state.cart.cart);
   const isFirstStep = activeStep === 0;
   const isSecondStep = activeStep === 1;
+  const [checkout, result] = useCheckoutMutation();
 
   async function handleFormSubmit(values, actions) {
     setActiveStep(activeStep + 1);
 
     if (isSecondStep) {
-      makePayment(values);
+      try {
+        const requestBody = {
+          first_name: values.shippingAddress.firstName,
+          last_name: values.shippingAddress.lastName,
+          country: values.shippingAddress.country,
+          street_1: values.shippingAddress.street1,
+          street_2: values.shippingAddress.street2,
+          city: values.shippingAddress.city,
+          state: values.shippingAddress.state,
+          zip_code: values.shippingAddress.zipCode,
+          email: values.email,
+          phone_number: values.phoneNumber,
+          products: cart.map(({ uuid, count }) => ({
+            product: uuid,
+            count: count,
+          })),
+        };
+
+        const mutationResult = await checkout(requestBody);
+        const stripe = await stripePromise;
+        await stripe.redirectToCheckout({ sessionId: mutationResult.data.id });
+      } catch (error) {
+        console.error("Error occurred during checkout:", error);
+      }
     }
 
     // Reset validation for the next step
     actions.setTouched({});
   }
 
-  async function makePayment(values) {
-    const stripe = await stripePromise;
-    const requestBody = {
-      first_name: values.shippingAddress.firstName,
-      last_name: values.shippingAddress.lastName,
-      country: values.shippingAddress.country,
-      street_1: values.shippingAddress.street1,
-      street_2: values.shippingAddress.street2,
-      city: values.shippingAddress.city,
-      state: values.shippingAddress.state,
-      zip_code: values.shippingAddress.zipCode,
-      email: values.email,
-      phone_number: values.phoneNumber,
-      products: cart.map(({ uuid, count }) => ({
-        product: uuid,
-        count: count,
-      })),
-    };
+  if (result.isLoading) {
+    return <Typography>Loading...</Typography>;
+  }
 
-    try {
-      console.log(requestBody);
-      const response = await client.post(
-        "api/v1/order/checkout/",
-        requestBody,
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      console.log(response);
-      const data = await response.data;
-      console.log(data);
-      await stripe.redirectToCheckout({ sessionId: data.id });
-    } catch (error) {
-      console.error("Error occurred:", error);
-    }
+  if (result.isError) {
+    return <Typography>{JSON.stringify(result.error)}</Typography>;
   }
 
   return (

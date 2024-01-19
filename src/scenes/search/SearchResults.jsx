@@ -1,39 +1,34 @@
 import { useSearchParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Product } from "../../components/Product";
 import { Box, Typography, Button } from "@mui/material";
-import { client } from "../../api";
+import { useProductSearchQuery, useLazyProductSearchQuery } from "../../api";
 
 export function SearchResults() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [products, setProducts] = useState([]);
-  const [nextPage, setNextPage] = useState(null);
-  const [count, setCount] = useState(0);
+  const [searchParams] = useSearchParams();
   const query = searchParams.get("query");
+  const [page, setPage] = useState(1);
+  const { data, isLoading, isError, error } = useProductSearchQuery({
+    query,
+    page,
+  });
 
-  async function fetchProducts(url) {
-    try {
-      const response = await client.get(url);
-      const data = await response.data;
-      setProducts((prevProducts) => [...prevProducts, ...data.results]);
-      setNextPage(data.next);
-      setCount(data.count);
-    } catch (error) {
-      console.error("Error occurred:", error);
-    }
-  }
+  const [fetchNextProducts] = useLazyProductSearchQuery();
 
   function loadMoreProducts() {
-    if (nextPage) {
-      fetchProducts(nextPage);
+    if (data.next) {
+      setPage((prevPage) => prevPage + 1);
+      fetchNextProducts({ query, page });
     }
   }
 
-  useEffect(() => {
-    setProducts([]);
-    const apiUrl = `api/v1/product/search/?page=1&limit=20&query=${query}`;
-    fetchProducts(apiUrl);
-  }, [searchParams]);
+  if (isLoading) {
+    return <Typography>Loading...</Typography>;
+  }
+
+  if (isError) {
+    return <Typography>{JSON.stringify(error)}</Typography>;
+  }
 
   return (
     <Box width="80%" margin="80px auto">
@@ -41,7 +36,7 @@ export function SearchResults() {
         Search
       </Typography>
       <Typography sx={{ marginTop: "25px" }}>
-        {`${count} result${count === 1 ? "" : "s"} for "${query}"`}
+        {`${data.count} result${data.count === 1 ? "" : "s"} for "${query}"`}
       </Typography>
       <Box mt="25px" width="100%">
         <Box
@@ -52,11 +47,11 @@ export function SearchResults() {
           rowGap="20px"
           columnGap="1.33%"
         >
-          {products.map((product) => (
+          {data.results.map((product) => (
             <Product product={product} key={product.uuid} />
           ))}
         </Box>
-        {nextPage && (
+        {data.next && (
           <Box textAlign="center" mt="40px">
             <Button
               variant="contained"

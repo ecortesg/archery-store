@@ -1,42 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Box, Typography, Tab, Tabs, useMediaQuery } from "@mui/material";
 import { Product } from "../../components/Product";
-import { client } from "../../api";
 
-export function ShoppingList() {
-  const [value, setValue] = useState("best-sellers");
+export function ShoppingList({ newArrivals, bestSellers, saleItems }) {
+  const [tab, setTab] = useState("best-sellers");
   const isNonMobile = useMediaQuery("(min-width:600px");
-  const [productsBestSellers, setProductsBestSellers] = useState([]);
-  const [productsNewArrivals, setProductsNewArrivals] = useState([]);
-  const [productsOnSale, setProductsOnSale] = useState([]);
 
   function handleChange(event, newValue) {
-    setValue(newValue);
+    setTab(newValue);
   }
 
-  async function getProductsBestSellers() {
-    const productsResponse = await client.get("api/v1/product/best-sellers/");
-    const products = await productsResponse.data;
-    setProductsBestSellers(products);
-  }
+  function renderProducts(selectedValue, tabName, data) {
+    if (selectedValue !== tabName) return null;
 
-  async function getProductsNewArrivals() {
-    const productsResponse = await client.get("api/v1/product/new-arrivals/");
-    const products = await productsResponse.data;
-    setProductsNewArrivals(products);
+    return data.map((product) => (
+      <Product product={product} key={product.uuid} />
+    ));
   }
-
-  async function getProductsOnSale() {
-    const productsResponse = await client.get("api/v1/product/on-sale/");
-    const products = await productsResponse.data;
-    setProductsOnSale(products);
-  }
-
-  useEffect(() => {
-    getProductsBestSellers();
-    getProductsNewArrivals();
-    getProductsOnSale();
-  }, []);
 
   return (
     <Box width="80%" margin="80px auto">
@@ -46,7 +26,7 @@ export function ShoppingList() {
       <Tabs
         textColor="primary"
         indicatorColor="primary"
-        value={value}
+        value={tab}
         onChange={handleChange}
         centered
         TabIndicatorProps={{ sx: { display: isNonMobile ? "block" : "none" } }}
@@ -65,20 +45,9 @@ export function ShoppingList() {
         rowGap="20px"
         columnGap="1.33%"
       >
-        {value === "new-arrivals" &&
-          productsNewArrivals.map((product) => (
-            <Product product={product} key={product.uuid} />
-          ))}
-
-        {value === "best-sellers" &&
-          productsBestSellers.map((product) => (
-            <Product product={product} key={product.uuid} />
-          ))}
-
-        {value === "on-sale" &&
-          productsOnSale.map((product) => (
-            <Product product={product} key={product.uuid} />
-          ))}
+        {renderProducts(tab, "new-arrivals", newArrivals)}
+        {renderProducts(tab, "best-sellers", bestSellers)}
+        {renderProducts(tab, "on-sale", saleItems)}
       </Box>
     </Box>
   );

@@ -29,7 +29,7 @@ export function ContactForm({
         <TextField
           fullWidth
           type="text"
-          label="Teléfono"
+          label="Phone number"
           onBlur={handleBlur}
           onChange={handleChange}
           value={values.phoneNumber}

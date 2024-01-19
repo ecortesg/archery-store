@@ -1,50 +1,30 @@
 import { IconButton, Box, Typography, Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { useLocation, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useState } from "react";
 import { shades } from "../../theme";
 import { Product } from "../../components/Product";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../../state";
-import { client } from "../../api";
+import { addToCart } from "../../state/cartSlice";
+import { useProductDetailsQuery } from "../../api";
 
 export function ProductDetails() {
   const { productId } = useParams();
   const [count, setCount] = useState(1);
-  const [product, setProduct] = useState(null);
-  const [products, setProducts] = useState([]);
-  const location = useLocation();
   const dispatch = useDispatch();
 
-  async function getProduct() {
-    const productResponse = await client.get(`api/v1/product/${productId}/`);
-    const product = await productResponse.data;
-    setProduct(product);
+  const { data, isLoading, isError, error } = useProductDetailsQuery(productId);
+
+  const { details, related_products } = data || {};
+
+  if (isLoading) {
+    return <Typography>Loading...</Typography>;
   }
 
-  async function getProducts() {
-    const productsResponse = await client.get(
-      `api/v1/product/${productId}/related/`
-    );
-    const products = productsResponse.data;
-    setProducts(products);
+  if (isError) {
+    return <Typography>{JSON.stringify(error)}</Typography>;
   }
-
-  useEffect(() => {
-    getProduct();
-    getProducts();
-  }, [location]);
-
-  const {
-    name,
-    description,
-    price,
-    discount,
-    discounted_price,
-    image,
-    category,
-  } = product || {};
 
   return (
     <Box width="80%" m="80px auto">
@@ -52,10 +32,10 @@ export function ProductDetails() {
         {/* IMAGES */}
         <Box flex="1 1 40%" mb="40px" height="550px">
           <img
-            alt={name}
+            alt={details.name}
             width="100%"
             height="100%"
-            src={image}
+            src={details.image}
             style={{ objectFit: "contain" }}
           />
         </Box>
@@ -67,23 +47,23 @@ export function ProductDetails() {
           </Box>
 
           <Box m="65px 0 25px 0">
-            <Typography variant="h3">{name}</Typography>
+            <Typography variant="h3">{details.name}</Typography>
             <Box display="flex" alignItems="center">
               <Typography fontWeight="bold" style={{ fontSize: "1.2em" }}>
-                ${discounted_price}
+                ${details.discounted_price}
               </Typography>
-              {discount !== "0.00" && (
+              {details.discount !== "0.00" && (
                 <Typography
                   style={{
                     textDecoration: "line-through",
                     marginLeft: "8px",
                   }}
                 >
-                  ${price}
+                  ${details.price}
                 </Typography>
               )}
             </Box>
-            <Typography sx={{ mt: "20px" }}>{description}</Typography>
+            <Typography sx={{ mt: "20px" }}>{details.description}</Typography>
           </Box>
 
           <Box display="flex" alignItems="center" minHeight="50px">
@@ -112,7 +92,7 @@ export function ProductDetails() {
                 "&:hover": { backgroundColor: shades.primary[500] },
               }}
               onClick={() => {
-                dispatch(addToCart({ product: { ...product, count } }));
+                dispatch(addToCart({ product: { ...details, count } }));
                 setCount(1);
               }}
             >
@@ -121,7 +101,7 @@ export function ProductDetails() {
           </Box>
           <Box>
             <Box m="20px 0 5px 0" display="flex">
-              <Typography>CATEGORIES: {category?.name}</Typography>
+              <Typography>CATEGORIES: {details.category.name}</Typography>
             </Box>
           </Box>
         </Box>
@@ -139,7 +119,7 @@ export function ProductDetails() {
           rowGap="20px"
           columnGap="1.33%"
         >
-          {products.slice(0, 6).map((product) => (
+          {related_products.slice(0, 6).map((product) => (
             <Product product={product} key={product.uuid} />
           ))}
         </Box>

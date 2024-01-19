@@ -1,41 +1,12 @@
-import { useEffect, useState } from "react";
-import { Box, IconButton, useMediaQuery } from "@mui/material";
+import { Box, IconButton, Typography, useMediaQuery } from "@mui/material";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import { client } from "../../api";
 
-// // Imports all images from the assets folder
-// function importAll(r) {
-//   return r.keys().reduce((acc, item) => {
-//     acc[item.replace("./", "")] = r(item);
-//     return acc;
-//   }, {});
-// }
-
-// const gallery = Object.values(
-//   import.meta.glob("../../assets/*.{png,jpg,jpeg,PNG,JPEG}", {
-//     eager: true,
-//     as: "url",
-//   })
-// );
-
-export function MainCarousel() {
-  const [gallery, setGallery] = useState([]);
-
+export function MainCarousel({ carouselImages }) {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const imageHeight = isNonMobile ? "66vh" : "700px";
-
-  async function getGallery() {
-    const imagesResponse = await client.get("api/v1/home/carousel-images/");
-    const images = await imagesResponse.data;
-    setGallery(images);
-  }
-
-  useEffect(() => {
-    getGallery();
-  }, []);
 
   return (
     <Carousel
@@ -75,8 +46,8 @@ export function MainCarousel() {
         </IconButton>
       )}
     >
-      {gallery.length &&
-        gallery.map((image) => (
+      {carouselImages.length &&
+        carouselImages.map((image) => (
           <Box key={image.uuid}>
             <img
               src={image.image}
