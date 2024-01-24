@@ -51,9 +51,11 @@ export const apiSlice = createApi({
     productDetails: builder.query({
       query: (productId) => `api/v1/product/${productId}/`,
     }),
+    // We don't want a cache entry per query, per page. Only one per query, e.g. {'query':'gym', 'page':'2'} vs. {'query':'gym'}
     productSearch: builder.query({
       query: (queryParams) =>
         `api/v1/product/search/?page=${queryParams.page}&limit=20&query=${queryParams.query}`,
+      // We remove 'page' from the cache key to ensure only one cache entry per query
       serializeQueryArgs: ({ queryArgs }) => {
         const newQueryArgs = { ...queryArgs };
         if (newQueryArgs.page) {
@@ -61,6 +63,7 @@ export const apiSlice = createApi({
         }
         return newQueryArgs;
       },
+      // Since our data is mapped to the same cache, it gets overwritten. To prevent this, we merge the incoming data with our existing data
       merge: (currentCache, newItems) => {
         if (currentCache.results) {
           return {
