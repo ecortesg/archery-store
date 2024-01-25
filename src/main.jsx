@@ -19,7 +19,7 @@ const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware),
-  devTools: true, // TODO make false in production
+  devTools: import.meta.env.VITE_ENV === "development",
 });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
