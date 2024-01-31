@@ -59,7 +59,7 @@ function Row({ row }) {
           </IconButton>
         </TableCell>
         <TableCell>{row.uuid}</TableCell>
-        <TableCell>{new Date(row.created_at).toLocaleString()}</TableCell>
+        <TableCell>{new Date(row.created_at).toLocaleDateString()}</TableCell>
         <TableCell>Pending</TableCell>
         <TableCell align="right">${row.total}</TableCell>
       </TableRow>
