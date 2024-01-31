@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import {
   Box,
   Button,
@@ -15,23 +14,10 @@ import { ContactForm } from "./ContactForm";
 import { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { useCheckoutMutation } from "../../api";
+import { selectCurrentUserEmail } from "../../state/authSlice";
+import { useSelector } from "react-redux";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
-
-const initialValues = {
-  shippingAddress: {
-    firstName: "",
-    lastName: "",
-    country: "",
-    street1: "",
-    street2: "",
-    city: "",
-    state: "",
-    zipCode: "",
-  },
-  email: "",
-  phoneNumber: "",
-};
 
 const checkoutSchema = [
   yup.object().shape({
@@ -61,6 +47,23 @@ export function Checkout() {
   const isFirstStep = activeStep === 0;
   const isSecondStep = activeStep === 1;
   const [checkout, result] = useCheckoutMutation();
+
+  const email = useSelector(selectCurrentUserEmail);
+
+  const initialValues = {
+    shippingAddress: {
+      firstName: "",
+      lastName: "",
+      country: "",
+      street1: "",
+      street2: "",
+      city: "",
+      state: "",
+      zipCode: "",
+    },
+    email: email,
+    phoneNumber: "",
+  };
 
   async function handleFormSubmit(values, actions) {
     setActiveStep(activeStep + 1);

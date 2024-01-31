@@ -37,8 +37,10 @@ export function Login() {
     try {
       const locationState = location.state?.from;
       const userData = await login(values).unwrap();
-      const user = jwtDecode(userData.access).user_id;
-      dispatch(setCredentials({ ...userData, user }));
+      const user = jwtDecode(userData.access);
+      dispatch(
+        setCredentials({ ...userData, user: user.user_id, email: user.email })
+      );
       navigate(locationState || "/");
     } catch (err) {
       if (err?.data?.detail) {

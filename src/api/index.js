@@ -28,11 +28,11 @@ async function baseQueryWithReauth(args, api, extraOptions) {
       api,
       extraOptions
     );
-    console.log(refreshResult);
     if (refreshResult?.data) {
       const user = api.getState().auth.user;
+      const email = api.getState().auth.email;
       // Store the new token
-      api.dispatch(setCredentials({ ...refreshResult.data, user }));
+      api.dispatch(setCredentials({ ...refreshResult.data, user, email }));
       // Retry the original query with new access token
       result = await baseQuery(args, api, extraOptions);
     } else {
@@ -89,8 +89,8 @@ export const apiSlice = createApi({
         body: { ...credentials },
       }),
     }),
-    account: builder.query({
-      query: () => "api/v1/user/",
+    order: builder.query({
+      query: () => "api/v1/order/",
     }),
     checkout: builder.mutation({
       query: (data) => ({
@@ -109,6 +109,6 @@ export const {
   useLazyProductSearchQuery,
   useLoginMutation,
   useSignupMutation,
-  useAccountQuery,
+  useOrderQuery,
   useCheckoutMutation,
 } = apiSlice;

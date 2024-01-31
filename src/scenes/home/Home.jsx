@@ -6,8 +6,6 @@ import { Typography } from "@mui/material";
 export function Home() {
   const { data, isLoading, isError, error } = useHomeQuery();
 
-  console.log(import.meta.env.VITE_ENV === "development");
-
   if (isLoading) {
     return <Typography>Loading...</Typography>;
   }
